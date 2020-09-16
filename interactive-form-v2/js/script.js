@@ -17,9 +17,9 @@ function initialSetUp() {
     jobRole.addEventListener('change', () => {
         if (jobRole.value == 'other') {
             otherTitle.style.display = '';
-        } else {
-            otherTitle.style.display = 'none';
-        }
+            } else {
+                otherTitle.style.display = 'none';
+            }
     });
 
     designSelect.addEventListener('change', () => {
@@ -35,24 +35,65 @@ function initialSetUp() {
                 heartShirt[i].disabled = true;
                 heartShirt[i].style.display = 'none';
             } 
+                colorSelect.value = jsPun[0].value;
 
-        } else if (designSelect.value == 'heart js') {
-            colorSelect.style.display = '';
-            pleaseSelect.style.display = 'none';
-            for(let i = 0; i < heartShirt.length; i++){
-                jsPun[i].disabled = true;
-                jsPun[i].style.display = 'none';
-            }
-            for(let i = 0; i < jsPun.length; i++){
-                heartShirt[i].disabled = false;
-                heartShirt[i].style.display = '';
-            }
-        } else {
-            pleaseSelect.style.display = '';
-            colorSelect.style.display = 'none';
+            } else if (designSelect.value == 'heart js') {
+                colorSelect.style.display = '';
+                pleaseSelect.style.display = 'none';
+                for(let i = 0; i < heartShirt.length; i++){
+                    jsPun[i].disabled = true;
+                    jsPun[i].style.display = 'none';
+                }
+                for(let i = 0; i < jsPun.length; i++){
+                    heartShirt[i].disabled = false;
+                    heartShirt[i].style.display = '';
+                } colorSelect.value = heartShirt[0].value;
+                    } else {
+                        pleaseSelect.style.display = '';
+                        colorSelect.style.display = 'none';
 
         }
     });
+    activitiesRegistration();
 };
+
+function activitiesRegistration(){
+    const activitiesBox = document.querySelector('.activities');
+    var priceDiv = document.createElement('div');
+    var priceText = document.createElement('p');
+    priceDiv.appendChild(priceText);
+    activitiesBox.appendChild(priceDiv);
+    const activityOptions = document.querySelectorAll('.activities input');
+    var runningTotal = 0;
+    document.querySelector('.activities').addEventListener('change', (e) => {
+        var clicked = e.target;
+        var clickedTime = e.target.getAttribute('data-day-and-time');
+        var price = parseInt(e.target.getAttribute('data-cost'));
+        runningTotal += price;
+        priceText.innerHTML = 'Total Cost: $' + runningTotal;
+        for(let i = 0; i < activityOptions.length; i++){
+            var activityTimes = activityOptions[i].getAttribute('data-day-and-time');
+            if(clickedTime === activityTimes && clicked !== activityOptions[i]){
+                activityOptions[i].disabled = true;
+                if(clicked.checked){
+                    activityOptions[i].disabled = true;
+                } else {
+                    activityOptions[i].disabled = false;  
+                }
+            }
+       } if(!clicked.checked){
+            runningTotal -= (price * 2);
+            priceText.innerHTML = 'Total Cost: $' + runningTotal;
+         }
+
+         if (runningTotal === 0){
+            priceDiv.style.display = 'none';
+         } else {
+            priceDiv.style.display = '';
+         }
+    });
+
+}
+
 
 initialSetUp();
