@@ -5,11 +5,13 @@ const colorSelect = document.querySelector('select#color');
 const designSelect = document.querySelector('select#design');
 const jsPun = colorSelect.querySelectorAll('#js-puns');
 const heartShirt = colorSelect.querySelectorAll('#heart-js');
+const colorLabel = colorSelect.previousElementSibling;
 
 function initialSetUp() {
     document.getElementById('name').focus();
     otherTitle.style.display = 'none';
     colorSelect.style.display = 'none';
+    colorLabel.style.display = 'none';
     var pleaseSelect = document.createElement('p');
     pleaseSelect.innerHTML = 'Please select a t-shirt theme';
     colorSelect.parentNode.appendChild(pleaseSelect);
@@ -26,6 +28,7 @@ function initialSetUp() {
         if (designSelect.value == 'js puns') {
             colorSelect.style.display = '';
             pleaseSelect.style.display = 'none';
+            colorLabel.style.display = '';
 
             for(let i = 0; i < jsPun.length; i++){
                 jsPun[i].disabled = false;
@@ -40,6 +43,7 @@ function initialSetUp() {
             } else if (designSelect.value == 'heart js') {
                 colorSelect.style.display = '';
                 pleaseSelect.style.display = 'none';
+                colorLabel.style.display = '';
                 for(let i = 0; i < heartShirt.length; i++){
                     jsPun[i].disabled = true;
                     jsPun[i].style.display = 'none';
@@ -51,10 +55,12 @@ function initialSetUp() {
                     } else {
                         pleaseSelect.style.display = '';
                         colorSelect.style.display = 'none';
+                        colorLabel.style.display = 'none';
 
         }
     });
     activitiesRegistration();
+    payment();
 };
 
 function activitiesRegistration(){
@@ -92,6 +98,37 @@ function activitiesRegistration(){
             priceDiv.style.display = '';
          }
     });
+
+}
+
+function payment(){
+    const paymentSelector = document.querySelector('select#payment');
+    const paymentOptions = document.querySelectorAll('#payment option');
+    const paypalDiv = document.querySelector('div#paypal');
+    const bitcoinDiv = document.querySelector('div#bitcoin');
+    const creditCardDiv = document.querySelector('div#credit-card');
+    paymentOptions[0].disabled = true;
+
+    paymentSelector.value = paymentOptions[1].value;
+    paypalDiv.style.display = 'none';
+    bitcoinDiv.style.display = 'none';
+
+    paymentSelector.addEventListener('change', (e) => {
+        if(paymentSelector.value === paymentOptions[1].value){
+            paypalDiv.style.display = 'none';
+            bitcoinDiv.style.display = 'none';
+            creditCardDiv.style.display = '';
+        } else if(paymentSelector.value === paymentOptions[2].value){
+            creditCardDiv.style.display = 'none';
+            paypalDiv.style.display = '';
+            bitcoinDiv.style.display = 'none';
+        } else if(paymentSelector.value === paymentOptions[3].value){
+            creditCardDiv.style.display = 'none';
+            paypalDiv.style.display = 'none';
+            bitcoinDiv.style.display = '';
+        } 
+    });
+    
 
 }
 
