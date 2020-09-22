@@ -14,7 +14,7 @@ const jsPun = colorSelect.querySelectorAll('#js-puns');
 const heartShirt = colorSelect.querySelectorAll('#heart-js');
 const activitiesBox = document.querySelector('.activities');
 const activityOptions = document.querySelectorAll('.activities input');
-var selectionError = document.querySelector('.activities legend');
+let selectionError = document.querySelector('.activities legend');
 const paymentSelector = document.querySelector('select#payment');
 const creditCardDiv = document.querySelector('div#credit-card');
 const ccNum = document.querySelector('input#cc-num');
@@ -32,8 +32,8 @@ function initialSetUp() {
     otherTitle.style.display = 'none';
     colorSelect.style.display = 'none';
     colorLabel.style.display = 'none';
-    /** Declaring a new variable and creating a paragraph element within it */
-    var pleaseSelect = document.createElement('p');
+    /** Declaring a new letiable and creating a paragraph element within it */
+    let pleaseSelect = document.createElement('p');
     /** Setting the text of the newly created p element */
     pleaseSelect.innerHTML = 'Please select a t-shirt theme';
     /** attaching the new p element to the colorSelect  */
@@ -55,7 +55,7 @@ function initialSetUp() {
 
     /** Pretty much the same as the jobRole
      *  When the value of the selected option is equal to anything specified
-     * They'll enter the correct if conditional and then have items hidden and disabled.
+     * They'll enter the correct if conditional and then have items hidden and disabled as needed.
      */
     designSelect.addEventListener('change', () => {
         if (designSelect.value == 'js puns') {
@@ -63,6 +63,7 @@ function initialSetUp() {
             pleaseSelect.style.display = 'none';
             colorLabel.style.display = '';
 
+            /** For loop that loops through items with the  */
             for(let i = 0; i < jsPun.length; i++){
                 jsPun[i].disabled = false;
                 jsPun[i].style.display = '';
@@ -94,14 +95,14 @@ function initialSetUp() {
     });
     activitiesRegistration();
     payment();
-    liveValidator();
+    liveValidators();
 };
 
-var selectionMessage = document.createElement('p');
+let selectionMessage = document.createElement('p');
 
 function activitiesRegistration(){
-    var priceDiv = document.createElement('div');
-    var priceText = document.createElement('p');
+    let priceDiv = document.createElement('div');
+    let priceText = document.createElement('p');
     selectionMessage.textContent = 'Please make a selection';
     selectionMessage.style.color = 'red';
     selectionMessage.style.fontSize = 'small';
@@ -109,16 +110,16 @@ function activitiesRegistration(){
     selectionMessage.style.display = 'none';
     priceDiv.appendChild(priceText);
     activitiesBox.appendChild(priceDiv);
-    var runningTotal = 0;
+    let runningTotal = 0;
     document.querySelector('.activities').addEventListener('change', (e) => {
-        var clicked = e.target;
-        var clickedTime = e.target.getAttribute('data-day-and-time');
-        var price = parseInt(e.target.getAttribute('data-cost'));
+        let clicked = e.target;
+        let clickedTime = e.target.getAttribute('data-day-and-time');
+        let price = parseInt(e.target.getAttribute('data-cost'));
         runningTotal += price;
         priceText.innerHTML = 'Total Cost: $' + runningTotal;
         selectionMessage.style.display = 'none';
         for(let i = 0; i < activityOptions.length; i++){
-            var activityTimes = activityOptions[i].getAttribute('data-day-and-time');
+            let activityTimes = activityOptions[i].getAttribute('data-day-and-time');
             if(clickedTime === activityTimes && clicked !== activityOptions[i]){
                 activityOptions[i].disabled = true;
                 if(clicked.checked){
@@ -169,7 +170,7 @@ function payment(){
 }
 
 const nameValidator = (e) => {
-    var name = nameField.value;
+    let name = nameField.value;
     if(name.length > 0){
         nameField.style.borderColor = 'green';
         return true;
@@ -180,9 +181,9 @@ const nameValidator = (e) => {
 }
 
 const emailValidator = (e) => {
-    var emailValue = emailField.value;
-    var atIndexOf = emailValue.indexOf('@');
-    var dotIndexOf = emailValue.lastIndexOf('.');
+    let emailValue = emailField.value;
+    let atIndexOf = emailValue.indexOf('@');
+    let dotIndexOf = emailValue.lastIndexOf('.');
     if(atIndexOf > 1 && dotIndexOf > (atIndexOf + 1)){
         emailField.style.borderColor = 'green';
         return true;
@@ -263,7 +264,22 @@ function creditCardChecker(reg, field){
     }
 }
 
-function liveValidator (){
+function liveCreditCardError(){
+    let cardN = ccNum.value.length;
+    let creditError = document.createElement('p');
+    creditError.style.color = 'red';
+    creditError.style.fontSize = 'small';
+    creditCardDiv.appendChild(creditError);
+    creditError.style.display = 'none';
+    creditCardDiv.addEventListener('focusout', (e) => {
+        if(cardN >= 3 && cardN <= 12){
+            creditError.textContent = 'Please enter a number that is between 13 and 16 digits long'; 
+            creditError.style.display = '';
+        }
+    })
+}
+
+function liveValidators (){
 
     nameField.addEventListener('keypress', (e) => {
         nameValidator();
@@ -274,6 +290,8 @@ function liveValidator (){
     });
 
     creditCardValidator();
+
+    liveCreditCardError();
 }
 
 
