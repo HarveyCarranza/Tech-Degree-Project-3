@@ -234,7 +234,7 @@ const nameValidator = (e) => {
     let name = nameField.value;
     //check to see if the length is greater than 0
     //if it is change the border to green and return true
-    if(name.length > 0){
+    if(name.length > 1){
         nameField.style.borderColor = 'green';
         return true;
     } else {
