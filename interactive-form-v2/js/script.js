@@ -175,11 +175,8 @@ function activitiesRegistration(){
             /**Checking to see if the value of clicked.checked is false
              * if it is false then we enter the loop and subtract the value of price
              * from runningTotal
-             * 
              * It has to be double the value because we're adding in the value once
              * at the same time when the activityOption is selected (clicked on) again
-             * Code is on line 144. There probably is a better way to do this
-             * but this worked and was fun
              */
        } if(!clicked.checked){
             runningTotal -= (price * 2);
@@ -245,6 +242,7 @@ const nameValidator = (e) => {
 }
 //email validator function
 const emailValidator = (e) => {
+    let emailReg = /^[\w\s@_!#$%^&*()<>?/|}{~:\]]*@\w*(.)[^@]\w*/;
     //storing the value of the email field to emailValue
     let emailValue = emailField.value;
     // finding and storing the number at which the @ appears in the email value
@@ -253,7 +251,7 @@ const emailValidator = (e) => {
     let dotIndexOf = emailValue.lastIndexOf('.');
     // checking to see if the atindex is greater than 1
     // and if the dotindex is greater than the atindex
-    if(atIndexOf > 1 && dotIndexOf > (atIndexOf + 1)){
+    if(atIndexOf > 1 && dotIndexOf > (atIndexOf + 1) && emailReg.test(emailValue) == true){
         emailField.style.borderColor = 'green';
         return true;
     } else {
@@ -350,7 +348,6 @@ function creditCardChecker(reg, field){
 function liveCreditCardError(){
     //declare then modify creditError's properties (I think they're called properties)
     let creditError = document.createElement('p');
-    creditError.textContent = 'Please enter a number that is between 13 and 16 digits long'; 
     creditError.style.color = 'red';
     creditError.style.fontSize = 'small';
     // attaching the credit error message to the parent of ccNum
@@ -363,6 +360,10 @@ function liveCreditCardError(){
         // if credit card number is less than 13 but greater than 8 show error message
         let cardN = ccNum.value.length;
         if(cardN <= 13 && cardN >= 8){
+            creditError.textContent = 'Please enter a number that is between 13 and 16 digits long'; 
+            creditError.style.display = '';
+        } else if(cardN == 0){
+            creditError.textContent = 'Credit Card field is empty';
             creditError.style.display = '';
         } else {
             //hide the message otherwise
