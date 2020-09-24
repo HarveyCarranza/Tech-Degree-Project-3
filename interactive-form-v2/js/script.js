@@ -242,7 +242,7 @@ const nameValidator = (e) => {
 }
 //email validator function
 const emailValidator = (e) => {
-    let emailReg = /^[\w\s@_!#$%^&*()<>?/|}{~:\]]*@\w*(.)[^@]\w*$/;
+    let emailReg = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+[.][a-zA-Z]+$/;
     //storing the value of the email field to emailValue
     let emailValue = emailField.value;
     // finding and storing the number at which the @ appears in the email value
